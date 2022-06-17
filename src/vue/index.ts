@@ -12,8 +12,6 @@ export default function ({
   const finalOptions: UserOptions = {
     ...rest,
     async onRoutesGenerated(routes) {
-      console.log(routes);
-
       if (customOnRoutesGenerated) {
         await customOnRoutesGenerated(routes);
       }

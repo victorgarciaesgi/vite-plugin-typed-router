@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTypedRouter } from '../../generated';
+import { useTypedRouter } from '../generated';
 
 const { router, routes } = useTypedRouter();
 function navigate() {
