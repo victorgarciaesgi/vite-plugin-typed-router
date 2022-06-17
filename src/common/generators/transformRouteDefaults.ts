@@ -1,11 +1,11 @@
-import { NuxtRouteConfig } from '@nuxt/types/config/router';
+import { VitePageConfig } from '../types';
 
 /**
  * Mutate the list of routes for edge case of default routes
  * @deprecated waiting for Nuxt 3 behaviour
  * */
-export function transformRouteDefault(existingRoutes: NuxtRouteConfig[], stripAtFromName: boolean) {
-  const recursiveMatch = (route: NuxtRouteConfig, parent?: NuxtRouteConfig) => {
+export function transformRouteDefault(existingRoutes: VitePageConfig[], stripAtFromName: boolean) {
+  const recursiveMatch = (route: VitePageConfig, parent?: VitePageConfig) => {
     if (route.path && route.path.startsWith('@') && !!parent) {
       route.path = route.path.split('@')[1];
       if (stripAtFromName && route.name) {

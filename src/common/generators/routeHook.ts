@@ -1,7 +1,5 @@
 import { fileURLToPath } from 'url';
-import chalk from 'chalk';
-import logSymbols from 'log-symbols';
-import { dirname, resolve } from 'pathe';
+import pc from 'picocolors';
 import { saveRouteFiles } from '../utils';
 import { constructRouteMap } from './main.generator';
 import {
@@ -11,9 +9,6 @@ import {
   createRuntimePluginFile,
   createRuntimeRoutesFile,
 } from './output.generator';
-
-// @ts-ignore
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export async function routeHook({
   outDir,
@@ -53,18 +48,21 @@ export async function routeHook({
         saveRouteFiles(outDir, 'index.ts', createRuntimeIndexFile()),
       ]);
 
-      console.log(logSymbols.success, `[typed-router] Routes definitions generated`);
+      console.log(
+        // logSymbols.success,
+        `[plugin-typed-pages] Routes definitions generated`
+      );
     } else {
       console.log(
-        logSymbols.warning,
-        chalk.yellow(
-          `[typed-router] No routes defined. Check if your ${chalk.underline(
-            chalk.bold('pages')
-          )} folder exists and remove ${chalk.underline(chalk.bold('app.vue'))}`
+        // logSymbols.warning,
+        pc.yellow(
+          `[plugin-typed-pages] No routes defined. Check if your ${pc.underline(
+            pc.bold('pages')
+          )} folder exists and remove ${pc.underline(pc.bold('app.vue'))}`
         )
       );
     }
   } catch (e) {
-    console.error(chalk.red('Error while generating routes definitions model'), '\n' + e);
+    console.error(pc.red('Error while generating routes definitions model'), '\n' + e);
   }
 }

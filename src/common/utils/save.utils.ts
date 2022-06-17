@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { resolve } from 'pathe';
-import logSymbols from 'log-symbols';
-import chalk from 'chalk';
+import pc from 'picocolors';
 import mkdirp from 'mkdirp';
 import { formatOutputWithPrettier } from './prettier.utils';
 
@@ -31,7 +30,10 @@ async function writeFile(path: string, content: string): Promise<void> {
   try {
     await fs.writeFileSync(path, content);
   } catch (e) {
-    console.log(logSymbols.error, chalk.red(`Error while saving file at ${path}`, e));
+    console.log(
+      // logSymbols.error,
+      pc.red(`Error while saving file at ${path}, ${e}`)
+    );
     return Promise.reject(e);
   }
 }

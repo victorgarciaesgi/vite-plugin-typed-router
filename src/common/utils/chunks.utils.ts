@@ -1,17 +1,17 @@
-import { NuxtRouteConfig } from '@nuxt/types/config/router';
+import { VitePageConfig } from 'common';
 
 /**
  * @see https://github.com/victorgarciaesgi/nuxt-typed-router/issues/28
  * for edge cases with matching siblings with same parent not in children
  * */
 export function extractMatchingSiblings(
-  mainRoute: NuxtRouteConfig,
-  siblingRoutes?: NuxtRouteConfig[]
-): NuxtRouteConfig[] | undefined {
+  mainRoute: VitePageConfig,
+  siblingRoutes?: VitePageConfig[]
+): VitePageConfig[] | undefined {
   return siblingRoutes?.filter((s) => {
-    const chunkName = extractChunkMain(mainRoute.file);
+    const chunkName = extractChunkMain(mainRoute.component?.__file);
     if (chunkName && s.name) {
-      const siblingChunkName = extractChunkMain(s.file);
+      const siblingChunkName = extractChunkMain(s.component?.__file);
       if (!siblingChunkName) return false;
       return chunkName === siblingChunkName;
     }
@@ -20,13 +20,13 @@ export function extractMatchingSiblings(
 }
 
 export function extractUnMatchingSiblings(
-  mainRoute: NuxtRouteConfig,
-  siblingRoutes?: NuxtRouteConfig[]
-): NuxtRouteConfig[] | undefined {
+  mainRoute: VitePageConfig,
+  siblingRoutes?: VitePageConfig[]
+): VitePageConfig[] | undefined {
   return siblingRoutes?.filter((s) => {
-    const chunkName = extractChunkMain(mainRoute.file);
+    const chunkName = extractChunkMain(mainRoute.component?.__file);
     if (chunkName) {
-      const siblingChunkName = extractChunkMain(s.file);
+      const siblingChunkName = extractChunkMain(s.component?.__file);
       if (!siblingChunkName) return false;
       return chunkName !== siblingChunkName;
     }

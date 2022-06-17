@@ -11,7 +11,11 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "checkJs": false,
-    "types": ["node", "jest"],
+    "declaration": true,
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "types": ["node", "vite", "vitest/globals"],
     "baseUrl": "./src"
-  }
+  },
+  "include": ["./src/**/*.ts", "./test/**/*.ts"]
 }

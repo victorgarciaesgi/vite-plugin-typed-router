@@ -1,39 +1,24 @@
 import type { Plugin } from 'vite';
 import { PluginOptions, routeHook } from '../common';
-
-const virtualModuleId = '@vite-plugin-typed-pages';
-const resolvedVirtualModuleId = '\0' + virtualModuleId;
+import PluginPages from 'vite-plugin-pages';
+import type { PageContext, ReactRoute, SolidRoute, UserOptions, VueRoute } from 'vite-plugin-pages';
 
 export default function ({
+  pluginPagesOptions = {},
   outDir = './generated',
   routesObjectName = 'routerPagesNames',
-}: PluginOptions = {}): Plugin {
-  let srcDir: string | null = null;
-  let isVitePluginPagesRegistered = true;
-  return {
-    name: 'vite-plugin-typed-pages',
-    enforce: 'pre',
-    configResolved(config) {
-      console.log(config);
-      if (!config.plugins.find(({ name }) => name === 'vite-plugin-pages')) {
-        isVitePluginPagesRegistered = false;
-        throw new Error(
-          '[vite-plugin-typed-pages] You need to register vite-plugin-pages before this plugin'
-        );
+}: PluginOptions): Plugin {
+  const { onRoutesGenerated: customOnRoutesGenerated, ...rest } = pluginPagesOptions;
+  const finalOptions: UserOptions = {
+    ...rest,
+    async onRoutesGenerated(routes) {
+      console.log(routes);
+
+      if (customOnRoutesGenerated) {
+        await customOnRoutesGenerated(routes);
       }
-      srcDir = config.root;
-      outDir = `./${outDir}`;
-    },
-    resolveId(id) {
-      if (id === virtualModuleId) {
-        return resolvedVirtualModuleId;
-      }
-    },
-    async buildStart(options) {
-      if (isVitePluginPagesRegistered) {
-        const routes: any = await import('~pages');
-        await routeHook({ outDir, routes, srcDir, routesObjectName });
-      }
+      await routeHook({ outDir, routesObjectName, routes, srcDir: process.cwd() });
     },
   };
+  return (PluginPages as any)['default'](finalOptions);
 }

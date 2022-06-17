@@ -1,3 +1,5 @@
+import { Router, RouteRecordRaw } from 'vue-router';
+
 export interface ParamDecl {
   key: string;
   type: string;
@@ -20,12 +22,14 @@ export interface GeneratorOutput {
   routesParams: RouteParamsDecl[];
 }
 
-export interface VitePageConfig {
-  component: {
+export type VitePageConfig = {
+  component?: {
     __file: string;
     __hmrId: string;
   };
-  name: string;
+  name?: string;
   path: string;
-  props: boolean;
-}
+  props?: boolean;
+  children?: VitePageConfig[];
+  redirect: any;
+};

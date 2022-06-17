@@ -1,5 +1,5 @@
-import { camelCase } from 'lodash-es';
-import { GeneratorOutput, ParamDecl, RouteParamsDecl } from '../types';
+import { camelCase } from 'lodash';
+import { GeneratorOutput, ParamDecl, RouteParamsDecl, VitePageConfig } from '../types';
 import {
   extractMatchingSiblings,
   extractRouteParamsFromPath,
@@ -10,7 +10,7 @@ function isItemLast(array: any[], index: number) {
   return index === array.length - 1;
 }
 
-export function constructRouteMap(routesConfig: NuxtRouteConfig[]): GeneratorOutput {
+export function constructRouteMap(routesConfig: VitePageConfig[]): GeneratorOutput {
   try {
     let routesObjectTemplate = '{';
     let routesDeclTemplate = '{';
@@ -26,20 +26,20 @@ export function constructRouteMap(routesConfig: NuxtRouteConfig[]): GeneratorOut
 
     return output;
   } catch (e) {
-    throw new Error('Generation failed');
+    throw new Error('Generation failed' + e);
   }
 }
 
 // -----
 type StartGeneratorProcedureParams = {
   output: GeneratorOutput;
-  routesConfig: NuxtRouteConfig[];
+  routesConfig: VitePageConfig[];
 };
 export function startGeneratorProcedure({
   output,
   routesConfig,
 }: StartGeneratorProcedureParams): void {
-  const rootSiblingsRoutes = routesConfig.map((route) => route.path);
+  const rootSiblingsRoutes = routesConfig.filter(({ path }) => path);
   routesConfig.forEach((route, index) =>
     walkThoughRoutes({
       route,
@@ -55,9 +55,9 @@ export function startGeneratorProcedure({
 
 // -----
 type WalkThoughRoutesParams = {
-  route: NuxtRouteConfig;
+  route: VitePageConfig;
   level: number;
-  siblings?: NuxtRouteConfig[];
+  siblings?: VitePageConfig[];
   parentName?: string;
   previousParams?: ParamDecl[];
   output: GeneratorOutput;
@@ -76,8 +76,8 @@ export function walkThoughRoutes({
   //
   const matchingSiblings = extractMatchingSiblings(route, siblings);
   const haveMatchingSiblings = !!matchingSiblings?.length && route.path !== '/';
-  const chunkArray = route.file?.split('/') ?? [];
-  const lastChunkArray = chunkArray[chunkArray?.length - 1].split('.vue')[0];
+  const chunkArray = route.component?.__file?.split('/') ?? [];
+  const lastChunkArray = chunkArray[chunkArray?.length - 1]?.split('.vue')[0];
   const isRootSibling = lastChunkArray === 'index';
   if (
     (route.children?.length && !haveMatchingSiblings) ||
@@ -102,7 +102,7 @@ export function walkThoughRoutes({
         parentName: nameKey,
         previousParams: allRouteParams,
         output,
-        isLast: isItemLast(childrenChunks, index),
+        isLast: isItemLast(childrenChunks!, index),
       })
     );
     // Output

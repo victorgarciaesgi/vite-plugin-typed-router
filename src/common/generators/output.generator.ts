@@ -44,7 +44,7 @@ export function createRuntimeHookFile(routesDeclTemplate: string): string {
     const routesList = ${routesDeclTemplate};
 
     return {
-      router: $router,
+      router: router,
       routes: routesList,
     } as any;
   };

@@ -21,7 +21,7 @@
 
 <br/>
 <p align="center">
-  <img src="https://github.com/victorgarciaesgi/nuxt-typed-router/blob/master/medias/in-action.gif?raw=true"/>
+  <img src="https://github.com/victorgarciaesgi/vite-plugin-typed-pages/blob/master/medias/in-action.gif?raw=true"/>
 </p>
 <br/>
 

@@ -1,5 +1,4 @@
-import chalk from 'chalk';
-import logSymbols from 'log-symbols';
+import pc from 'picocolors';
 import prettier from 'prettier';
 const { resolveConfig, format } = prettier;
 
@@ -28,7 +27,11 @@ export async function formatOutputWithPrettier(template: string): Promise<string
 
     return formatedTemplate;
   } catch (e) {
-    console.error(logSymbols.error, chalk.red('Error while formatting the output'), '\n' + e);
+    console.error(
+      // logSymbols.error,
+      pc.red('Error while formatting the output'),
+      '\n' + e
+    );
     return Promise.reject(e);
   }
 }
