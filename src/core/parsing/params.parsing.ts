@@ -18,9 +18,7 @@ export function extractRouteParamsFromPath(
       optionalParam: isOptional,
     };
   });
-  if (allMergedParams.length) {
-    console.log(path, { allMergedParams, previousParams });
-  }
+
   if (previousParams?.length) {
     allMergedParams = allMergedParams.concat(
       previousParams.map((m) => {
