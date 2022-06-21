@@ -3,7 +3,10 @@ import { Router, RouteRecordRaw } from 'vue-router';
 export interface ParamDecl {
   key: string;
   type: string;
+  /** Only for type generation */
   required: boolean;
+  /** vue-router relative */
+  optionalParam: boolean;
 }
 
 export interface RouteParamsDecl {

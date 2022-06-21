@@ -28,17 +28,18 @@ export const useTypedRouter = (): {
     index: 'index',
     childOne: {
       childOneChildOneSubOne: 'parent-child-one-child-one-sub-one',
-      user: { index: 'parent-child-one-child-one-sub-one-user' },
+      user: { oneChildOneSubOneUserId: 'parent-child-one-child-one-sub-one-user-id' },
       childOneChildOneSubTwo: 'parent-child-one-child-one-sub-two',
       index: 'parent-child-one',
     },
     childTwo: {
       childTwoId: 'parent-child-two-id',
+      childTwoChildOneSubOneUser: 'parent-child-two-child-one-sub-one-user',
       childTwoChildOneSubOne: 'parent-child-two-child-one-sub-one',
       index: 'parent-child-two',
       profile: {
         id: {
-          slug: { index: 'parent-child-two-profile-id-slug' },
+          profileIdSlug: 'parent-child-two-profile-id-slug',
           index: 'parent-child-two-profile-id',
         },
         index: 'parent-child-two-profile',

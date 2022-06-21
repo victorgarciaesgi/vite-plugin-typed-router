@@ -21,11 +21,21 @@ export const staticDeclarations = `
   type TypedRouteParamsStructure = {
     [K in TypedRouteList]: Record<string, string | number> | never;
   };
+
+  type AreAllParamsOptional<T> = {
+    [K in keyof T]-?: T[K] extends Exclude<T[K], undefined> ? false : true;
+  }[keyof T] extends true
+    ? true
+    : false;
   
-  type TypedLocationAsRelativeRaw<T extends TypedRouteList> = {
+  
+  type TypedLocationAsRelativeRaw<T extends TypedRouteList, V extends any = TypedRouteParams[T]> = {
     name?: T;
-    params?: TypedRouteParams[T];
-  };
+  } & ([V] extends [never]
+    ? {}
+    : AreAllParamsOptional<V> extends true
+    ? { params?: V }
+    : { params: V });
   
   type TypedRouteLocationRaw<T extends TypedRouteList> = RouteQueryAndHash &
     TypedLocationAsRelativeRaw<T> &

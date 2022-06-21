@@ -92,7 +92,10 @@ export function createTypedRouteParamsExport(routesParams: RouteParamsDecl[]): s
             params.length
               ? `{
           ${params
-            .map(({ key, required, type }) => `"${key}"${required ? '' : '?'}: ${type}`)
+            .map(
+              ({ key, required, type, optionalParam }) =>
+                `"${key}"${required && !optionalParam ? '' : '?'}: ${type}`
+            )
             .join(',\n')}
         }`
               : 'never'

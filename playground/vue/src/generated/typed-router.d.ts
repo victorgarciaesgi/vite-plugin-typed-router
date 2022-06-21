@@ -18,17 +18,18 @@ export type RouteListDecl = {
   index: 'index';
   childOne: {
     childOneChildOneSubOne: 'parent-child-one-child-one-sub-one';
-    user: { index: 'parent-child-one-child-one-sub-one-user' };
+    user: { oneChildOneSubOneUserId: 'parent-child-one-child-one-sub-one-user-id' };
     childOneChildOneSubTwo: 'parent-child-one-child-one-sub-two';
     index: 'parent-child-one';
   };
   childTwo: {
     childTwoId: 'parent-child-two-id';
+    childTwoChildOneSubOneUser: 'parent-child-two-child-one-sub-one-user';
     childTwoChildOneSubOne: 'parent-child-two-child-one-sub-one';
     index: 'parent-child-two';
     profile: {
       id: {
-        slug: { index: 'parent-child-two-profile-id-slug' };
+        profileIdSlug: 'parent-child-two-profile-id-slug';
         index: 'parent-child-two-profile-id';
       };
       index: 'parent-child-two-profile';
@@ -42,20 +43,25 @@ export type TypedRouteParams = {
   activate: never;
   index: never;
   'parent-child-one-child-one-sub-one': never;
-  'parent-child-one-child-one-sub-one-user': never;
+  'parent-child-one-child-one-sub-one-user-id': {
+    id: string | number;
+  };
   'parent-child-one-child-one-sub-two': never;
   'parent-child-one': never;
   'parent-child-two-id': {
     id: string | number;
   };
+  'parent-child-two-child-one-sub-one-user': {
+    user?: string | number;
+  };
   'parent-child-two-child-one-sub-one': never;
   'parent-child-two': never;
   'parent-child-two-profile-id-slug': {
-    slug?: string | number;
+    slug: string | number;
     id?: string | number;
   };
   'parent-child-two-profile-id': {
-    id?: string | number;
+    id: string | number;
   };
   'parent-child-two-profile': never;
   rootPage: never;
@@ -66,15 +72,19 @@ type TypedRouteParamsStructure = {
   [K in TypedRouteList]: Record<string, string | number> | never;
 };
 
-type TypedLocationAsRelativeRaw<T extends TypedRouteList> = Omit<
-  {
-    name?: T;
-    params: TypedRouteParams[T];
-  },
-  [TypedRouteParams[T]] extends [never] ? 'params' : ''
->;
+type AreAllParamsOptional<T> = {
+  [K in keyof T]-?: T[K] extends Exclude<T[K], undefined> ? false : true;
+}[keyof T] extends true
+  ? true
+  : false;
 
-type test = TypedLocationAsRelativeRaw<'parent-child-two-profile-id'>;
+type TypedLocationAsRelativeRaw<T extends TypedRouteList, V extends any = TypedRouteParams[T]> = {
+  name?: T;
+} & ([V] extends [never]
+  ? {}
+  : AreAllParamsOptional<V> extends true
+  ? { params?: V }
+  : { params: V });
 
 type TypedRouteLocationRaw<T extends TypedRouteList> = RouteQueryAndHash &
   TypedLocationAsRelativeRaw<T> &

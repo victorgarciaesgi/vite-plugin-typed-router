@@ -233,11 +233,14 @@ export function normalizeRoutes(
         const file = normalize(route.component);
         const metaImportName = genSafeVariableName(file) + 'Meta';
         metaImports.add(genImport(`${file}?macro=true`, [{ name: 'meta', as: metaImportName }]));
+        const { children, ...rest } = route;
         return {
           ...Object.fromEntries(
-            Object.entries(route).map(([key, value]) => [key, JSON.stringify(value)])
+            Object.entries(rest).map(([key, value]) => [key, JSON.stringify(value)])
           ),
-          children: route.children ? normalizeRoutes(route.children, metaImports).routes : [],
+          ...(children.length && {
+            children: normalizeRoutes(route.children, metaImports).routes,
+          }),
           component: genDynamicImport(file),
         };
       })

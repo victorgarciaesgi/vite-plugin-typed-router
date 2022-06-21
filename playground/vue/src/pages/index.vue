@@ -5,8 +5,9 @@
 <script setup lang="ts">
 import { useTypedRouter } from '../generated';
 
-const { router, routes } = useTypedRouter();
+const { router } = useTypedRouter();
+
 function navigate() {
-  router.push({ name: routes.childTwo.profile.id.index, params: { id: '1' } });
+  router.push({ name: 'parent-child-two-profile' });
 }
 </script>
