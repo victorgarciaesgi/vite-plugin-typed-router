@@ -5,5 +5,5 @@
   "singleQuote": true,
   "semi": true,
   "bracketSpacing": true,
-  "htmlWhitespaceSensitivity": "strict"
+  "htmlWhitespaceSensitivity": "strict",
 }

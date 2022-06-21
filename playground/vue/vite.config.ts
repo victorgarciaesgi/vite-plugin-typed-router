@@ -4,8 +4,5 @@ import TypedPages from '../../dist';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    vue(),
-    TypedPages({ pluginPagesOptions: { routeStyle: 'nuxt' }, outDir: './src/generated' }),
-  ],
+  plugins: [vue(), TypedPages({})],
 });

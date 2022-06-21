@@ -7,8 +7,6 @@ import { useTypedRouter } from '../generated';
 
 const { router, routes } = useTypedRouter();
 function navigate() {
-  // console.log($typedRouter, $routesList);
-  // router.push({ name: 'activate' });
-  router.push({ name: routes.activate });
+  router.push({ name: routes.childTwo.profile.id.index, params: { id: '1' } });
 }
 </script>

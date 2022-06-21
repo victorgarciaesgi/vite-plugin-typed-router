@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { resolve } from 'pathe';
-import pc from 'picocolors';
+import chalk from 'chalk';
 import mkdirp from 'mkdirp';
 import { formatOutputWithPrettier } from './prettier.utils';
 
@@ -32,7 +32,7 @@ async function writeFile(path: string, content: string): Promise<void> {
   } catch (e) {
     console.log(
       // logSymbols.error,
-      pc.red(`Error while saving file at ${path}, ${e}`)
+      chalk.red(`Error while saving file at ${path}, ${e}`)
     );
     return Promise.reject(e);
   }

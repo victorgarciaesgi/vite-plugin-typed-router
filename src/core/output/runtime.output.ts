@@ -1,23 +1,5 @@
-import { RouteParamsDecl } from '../types';
-import { signatureTemplate, staticDeclarations, staticDeclImports } from './output.templates';
-
-export function createRuntimePluginFile(routesDeclTemplate: string): string {
-  return `
-  ${signatureTemplate}
-  import { defineNuxtPlugin } from '#app';
-
-  export default defineNuxtPlugin((nuxtApp) => {
-    const routesList = ${routesDeclTemplate};
-
-    return {
-      provide: {
-        typedRouter: nuxtApp.$router,
-        routesList,
-      },
-    };
-  });
-  `;
-}
+import { RouteParamsDecl } from '../../types';
+import { signatureTemplate, staticDeclarations, staticDeclImports } from './static.output';
 
 export function createRuntimeHookFile(routesDeclTemplate: string): string {
   return `
@@ -63,16 +45,14 @@ export function createRuntimeIndexFile(): string {
 export function createRuntimeRoutesFile({
   routesList,
   routesObjectTemplate,
-  routesObjectName,
 }: {
   routesList: string[];
-  routesObjectName: string;
   routesObjectTemplate: string;
 }): string {
   return `
     ${signatureTemplate}
 
-    export const ${routesObjectName} = ${routesObjectTemplate};
+    export const routesNames = ${routesObjectTemplate};
 
     ${createTypedRouteListExport(routesList)}
   `;

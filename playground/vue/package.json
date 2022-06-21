@@ -1,13 +1,13 @@
 {
   "name": "playground",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "vite-plugin-pages": "^0.24.2",
     "vue": "^3.2.37",
     "vue-router": "^4.0.16"
   },

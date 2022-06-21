@@ -1,4 +1,4 @@
-import pc from 'picocolors';
+import chalk from 'chalk';
 import prettier from 'prettier';
 const { resolveConfig, format } = prettier;
 
@@ -29,7 +29,7 @@ export async function formatOutputWithPrettier(template: string): Promise<string
   } catch (e) {
     console.error(
       // logSymbols.error,
-      pc.red('Error while formatting the output'),
+      chalk.red('Error while formatting the output'),
       '\n' + e
     );
     return Promise.reject(e);

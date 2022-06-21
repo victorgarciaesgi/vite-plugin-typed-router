@@ -1,16 +1,17 @@
-import { camelCase } from 'lodash';
-import { GeneratorOutput, ParamDecl, RouteParamsDecl, VitePageConfig } from '../types';
+import { NuxtPage } from '@nuxt/schema';
+import { camelCase } from 'lodash-es';
+import { GeneratorOutput, ParamDecl, RouteParamsDecl } from '../../types';
 import {
   extractMatchingSiblings,
   extractRouteParamsFromPath,
   extractUnMatchingSiblings,
-} from '../utils';
+} from '../parsing';
 
 function isItemLast(array: any[], index: number) {
   return index === array.length - 1;
 }
 
-export function constructRouteMap(routesConfig: VitePageConfig[]): GeneratorOutput {
+export function constructRouteMap(routesConfig: NuxtPage[]): GeneratorOutput {
   try {
     let routesObjectTemplate = '{';
     let routesDeclTemplate = '{';
@@ -33,7 +34,7 @@ export function constructRouteMap(routesConfig: VitePageConfig[]): GeneratorOutp
 // -----
 type StartGeneratorProcedureParams = {
   output: GeneratorOutput;
-  routesConfig: VitePageConfig[];
+  routesConfig: NuxtPage[];
 };
 export function startGeneratorProcedure({
   output,
@@ -55,9 +56,9 @@ export function startGeneratorProcedure({
 
 // -----
 type WalkThoughRoutesParams = {
-  route: VitePageConfig;
+  route: NuxtPage;
   level: number;
-  siblings?: VitePageConfig[];
+  siblings?: NuxtPage[];
   parentName?: string;
   previousParams?: ParamDecl[];
   output: GeneratorOutput;
@@ -76,7 +77,7 @@ export function walkThoughRoutes({
   //
   const matchingSiblings = extractMatchingSiblings(route, siblings);
   const haveMatchingSiblings = !!matchingSiblings?.length && route.path !== '/';
-  const chunkArray = route.component?.__file?.split('/') ?? [];
+  const chunkArray = route.file?.split('/') ?? [];
   const lastChunkArray = chunkArray[chunkArray?.length - 1]?.split('.vue')[0];
   const isRootSibling = lastChunkArray === 'index';
   if (
