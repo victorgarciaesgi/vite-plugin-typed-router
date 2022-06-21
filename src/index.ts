@@ -1,9 +1,11 @@
-import { MODULE_IDS, MODULE_ID_VIRTUAL, ROUTE_BLOCK_ID_VIRTUAL } from './core/constants';
+import { MODULE_IDS, ROUTE_BLOCK_ID_VIRTUAL } from './core/constants';
 import { resolve } from 'pathe';
 import type { Plugin } from 'vite';
 import { ResolvedConfig } from 'vitest';
 import { normalizeRoutes, resolvePagesRoutes, typedPagesResolver } from './core';
 import { TypedRouterOptions } from './types';
+
+export type { TypedRouterOptions };
 
 export function parsePageRequest(id: string) {
   const [moduleId, rawQuery] = id.split('?', 2);
@@ -45,6 +47,11 @@ export default function vitePluginVueTypedRouter({
 
       return null;
     },
+    api: {
+      async getResolvedPagesRoutes() {
+        return await resolvePagesRoutes(finalPagesDir);
+      },
+    },
     async load(id) {
       const { moduleId, pageId } = parsePageRequest(id);
 
@@ -66,6 +73,7 @@ export default function vitePluginVueTypedRouter({
     async configureServer(server) {
       const routes = await resolvePagesRoutes(finalPagesDir);
       await typedPagesResolver({ outDir: finalOutDir, routes, srcDir });
+
       async function watcherHandler(path: string) {
         if (path.includes(finalPagesDir)) {
           const routes = await resolvePagesRoutes(finalPagesDir);

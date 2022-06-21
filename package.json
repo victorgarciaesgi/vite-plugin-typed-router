@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "npm run prepack -- --watch",
     "prepack": "tsup src/index.ts --format esm,cjs --dts --clean",
-    "test": "yarn prepack && vitest run",
-    "test:watch": "yarn prepack && vitest"
+    "test": "pnpm run prepack && vitest run",
+    "test:watch": "pnpm run prepack && vitest"
   },
   "exports": {
     ".": {
@@ -25,7 +25,7 @@
   },
   "keywords": [
     "vite-plugin vue typed pages",
-    "vite-plugin vue typed router",
+    "vite-plugin vue router typed",
     "vite-plugin typed",
     "vite-plugin safe router",
     "vite-plugin typed routes",
