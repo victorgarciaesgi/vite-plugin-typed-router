@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "npm run prepack -- --watch",
     "prepack": "tsup src/index.ts --format esm,cjs --dts --clean",
-    "test": "pnpm run prepack && vitest run",
-    "test:watch": "pnpm run prepack && vitest"
+    "test": "yarn run prepack && vitest run",
+    "test:watch": "yarn run prepack && vitest"
   },
   "exports": {
     ".": {
