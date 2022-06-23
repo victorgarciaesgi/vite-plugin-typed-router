@@ -18,39 +18,10 @@ import { TypedRouter, RouteListDecl } from './typed-router';
 export const useTypedRouter = (): {
   /** Export of $router with type check */
   router: TypedRouter;
-  /** Contains a typed dictionnary of all your route names (for syntax sugar) */
-  routes: RouteListDecl;
 } => {
   const router = useRouter();
 
-  const routesList = {
-    activate: 'activate',
-    index: 'index',
-    childOne: {
-      childOneChildOneSubOne: 'parent-child-one-child-one-sub-one',
-      user: { oneChildOneSubOneUserId: 'parent-child-one-child-one-sub-one-user-id' },
-      childOneChildOneSubTwo: 'parent-child-one-child-one-sub-two',
-      index: 'parent-child-one',
-    },
-    childTwo: {
-      childTwoId: 'parent-child-two-id',
-      childTwoChildOneSubOneUser: 'parent-child-two-child-one-sub-one-user',
-      childTwoChildOneSubOne: 'parent-child-two-child-one-sub-one',
-      index: 'parent-child-two',
-      profile: {
-        id: {
-          profileIdSlug: 'parent-child-two-profile-id-slug',
-          index: 'parent-child-two-profile-id',
-        },
-        index: 'parent-child-two-profile',
-      },
-    },
-    rootPage: 'rootPage',
-    test: 'test',
-  };
-
   return {
     router: router,
-    routes: routesList,
   } as any;
 };

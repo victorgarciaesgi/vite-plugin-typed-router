@@ -15,7 +15,7 @@
 
 Support for now: 
 
-| Framework| Support|
+| Framework| Support |
 | ---------| -- |
 | Vue      | ✅ | 
 | React    | ❌ |   
@@ -145,7 +145,7 @@ Given this structure
 The generated route list will look like this
 
 ```ts
-export const routerPagesNames = {
+export const routesNames = {
   forgotpassword: 'forgotpassword' as const,
   login: 'login' as const,
   resetPassword: 'reset-password' as const,
@@ -169,6 +169,8 @@ export type TypedRouteList =
   | 'index-statistics'
   | 'index-user';
 ```
+
+> You can disable `routesNames` object generation if you don't need it with the `printRoutesTree` option
 
 
 # Usage with `useTypedRouter` hook

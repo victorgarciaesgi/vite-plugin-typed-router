@@ -14,32 +14,6 @@ import type {
 } from 'vue-router';
 import type { TypedRouteList } from './__routes';
 
-export type RouteListDecl = {
-  activate: 'activate';
-  index: 'index';
-  childOne: {
-    childOneChildOneSubOne: 'parent-child-one-child-one-sub-one';
-    user: { oneChildOneSubOneUserId: 'parent-child-one-child-one-sub-one-user-id' };
-    childOneChildOneSubTwo: 'parent-child-one-child-one-sub-two';
-    index: 'parent-child-one';
-  };
-  childTwo: {
-    childTwoId: 'parent-child-two-id';
-    childTwoChildOneSubOneUser: 'parent-child-two-child-one-sub-one-user';
-    childTwoChildOneSubOne: 'parent-child-two-child-one-sub-one';
-    index: 'parent-child-two';
-    profile: {
-      id: {
-        profileIdSlug: 'parent-child-two-profile-id-slug';
-        index: 'parent-child-two-profile-id';
-      };
-      index: 'parent-child-two-profile';
-    };
-  };
-  rootPage: 'rootPage';
-  test: 'test';
-};
-
 export type TypedRouteParams = {
   activate: never;
   index: never;

@@ -22,26 +22,20 @@ export default function vitePluginVueTypedRouter(options?: TypedRouterOptions): 
   const virtualModuleId = 'virtual:typed-router';
   const resolvedVirtualModuleId = '\0' + virtualModuleId;
 
-  let srcDir = options?.srcDir ?? 'src';
-
   const {
-    outDir = `${srcDir}/generated`,
-    pagesDir = `${srcDir}/pages`,
+    outDir = `src/generated`,
+    pagesDir = `src/pages`,
     printRoutesTree = true,
   } = options ?? {};
 
-  let config: ResolvedConfig;
   let rootDir: string;
-  let finalSrcDir: string;
   let finalOutDir: string;
   let finalPagesDir: string;
   return {
     name: 'vite-plugin-typed-router',
     enforce: 'pre',
     configResolved(config) {
-      config = config;
       rootDir = config.root;
-      finalSrcDir = resolve(rootDir, srcDir);
       finalOutDir = resolve(rootDir, outDir);
       finalPagesDir = resolve(rootDir, pagesDir);
     },
