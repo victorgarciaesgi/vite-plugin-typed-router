@@ -18,25 +18,30 @@ export function parsePageRequest(id: string) {
   };
 }
 
-export default function vitePluginVueTypedRouter({
-  outDir = 'src/generated',
-  pagesDir = 'src/pages',
-}: TypedRouterOptions): Plugin {
+export default function vitePluginVueTypedRouter(options?: TypedRouterOptions): Plugin {
   const virtualModuleId = 'virtual:typed-router';
   const resolvedVirtualModuleId = '\0' + virtualModuleId;
 
+  let srcDir = options?.srcDir ?? 'src';
+
+  const {
+    outDir = `${srcDir}/generated`,
+    pagesDir = `${srcDir}/pages`,
+    printRoutesTree = true,
+  } = options ?? {};
+
   let config: ResolvedConfig;
   let rootDir: string;
-  let srcDir: string;
+  let finalSrcDir: string;
   let finalOutDir: string;
   let finalPagesDir: string;
   return {
-    name: 'vite-plugin-vue-typed-router',
+    name: 'vite-plugin-typed-router',
     enforce: 'pre',
     configResolved(config) {
       config = config;
       rootDir = config.root;
-      srcDir = resolve(rootDir, 'src');
+      finalSrcDir = resolve(rootDir, srcDir);
       finalOutDir = resolve(rootDir, outDir);
       finalPagesDir = resolve(rootDir, pagesDir);
     },
@@ -72,12 +77,20 @@ export default function vitePluginVueTypedRouter({
 
     async configureServer(server) {
       const routes = await resolvePagesRoutes(finalPagesDir);
-      await typedPagesResolver({ outDir: finalOutDir, routes, srcDir });
+      await typedPagesResolver({
+        outDir: finalOutDir,
+        routes,
+        printRoutesTree,
+      });
 
       async function watcherHandler(path: string) {
         if (path.includes(finalPagesDir)) {
           const routes = await resolvePagesRoutes(finalPagesDir);
-          await typedPagesResolver({ outDir: finalOutDir, routes, srcDir });
+          await typedPagesResolver({
+            outDir: finalOutDir,
+            routes,
+            printRoutesTree,
+          });
         }
       }
       server.watcher

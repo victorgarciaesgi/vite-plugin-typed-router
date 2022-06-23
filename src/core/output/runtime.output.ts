@@ -1,7 +1,10 @@
 import { RouteParamsDecl } from '../../types';
 import { signatureTemplate, staticDeclarations, staticDeclImports } from './static.output';
 
-export function createRuntimeHookFile(routesDeclTemplate: string): string {
+export function createRuntimeHookFile(
+  routesDeclTemplate: string,
+  printRoutesTree: boolean
+): string {
   return `
   ${signatureTemplate}
   import { useRouter } from 'vue-router';
@@ -18,16 +21,22 @@ export function createRuntimeHookFile(routesDeclTemplate: string): string {
   export const useTypedRouter = (): {
     /** Export of $router with type check */
     router: TypedRouter,
+    ${
+      printRoutesTree
+        ? `
     /** Contains a typed dictionnary of all your route names (for syntax sugar) */
     routes: RouteListDecl
+    `
+        : ''
+    }
   } => {
     const router = useRouter();
 
-    const routesList = ${routesDeclTemplate};
+    ${printRoutesTree ? `const routesList = ${routesDeclTemplate};` : ''} 
 
     return {
       router: router,
-      routes: routesList,
+      ${printRoutesTree ? 'routes: routesList,' : ''}
     } as any;
   };
 
@@ -45,14 +54,16 @@ export function createRuntimeIndexFile(): string {
 export function createRuntimeRoutesFile({
   routesList,
   routesObjectTemplate,
+  printRoutesTree,
 }: {
   routesList: string[];
   routesObjectTemplate: string;
+  printRoutesTree: boolean;
 }): string {
   return `
     ${signatureTemplate}
 
-    export const routesNames = ${routesObjectTemplate};
+    ${printRoutesTree ? `export const routesNames = ${routesObjectTemplate};` : ''}
 
     ${createTypedRouteListExport(routesList)}
   `;
@@ -60,18 +71,18 @@ export function createRuntimeRoutesFile({
 
 export function createDeclarationRoutesFile({
   routesDeclTemplate,
-  routesList,
   routesParams,
+  printRoutesTree,
 }: {
   routesDeclTemplate: string;
-  routesList: string[];
   routesParams: RouteParamsDecl[];
+  printRoutesTree: boolean;
 }): string {
   return `
     ${signatureTemplate}
     ${staticDeclImports}
 
-    export type RouteListDecl = ${routesDeclTemplate};
+    ${printRoutesTree ? `export type RouteListDecl = ${routesDeclTemplate};` : ''}
 
     ${createTypedRouteParamsExport(routesParams)}
 

@@ -11,28 +11,32 @@ import { constructRouteMap } from './main';
 export async function typedPagesResolver({
   outDir,
   routes,
-  srcDir,
+  printRoutesTree,
 }: {
   outDir: string;
   routes: any[];
-  srcDir: string;
-}) {
+  printRoutesTree: boolean;
+}): Promise<void> {
   try {
     if (routes.length) {
       const { routesDeclTemplate, routesList, routesObjectTemplate, routesParams } =
         constructRouteMap(routes);
 
       await Promise.all([
-        saveRouteFiles(outDir, '__useTypedRouter.ts', createRuntimeHookFile(routesDeclTemplate)),
+        saveRouteFiles(
+          outDir,
+          '__useTypedRouter.ts',
+          createRuntimeHookFile(routesDeclTemplate, printRoutesTree)
+        ),
         saveRouteFiles(
           outDir,
           `__routes.ts`,
-          createRuntimeRoutesFile({ routesList, routesObjectTemplate })
+          createRuntimeRoutesFile({ routesList, routesObjectTemplate, printRoutesTree })
         ),
         saveRouteFiles(
           outDir,
           `typed-router.d.ts`,
-          createDeclarationRoutesFile({ routesDeclTemplate, routesList, routesParams })
+          createDeclarationRoutesFile({ routesDeclTemplate, routesParams, printRoutesTree })
         ),
         saveRouteFiles(outDir, 'index.ts', createRuntimeIndexFile()),
       ]);

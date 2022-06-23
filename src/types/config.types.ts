@@ -11,4 +11,8 @@ export interface TypedRouterOptions {
    * @default "<srcDir>/pages"
    */
   pagesDir?: string;
+  /** Print the generated routes tree object in output
+   * @default "true"
+   */
+  printRoutesTree?: boolean;
 }
