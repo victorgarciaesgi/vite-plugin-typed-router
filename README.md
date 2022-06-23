@@ -1,4 +1,4 @@
-# 🚗🚦 Vite plugin Typed Router
+# 🚗🚦 vite-plugin-typed-router
 
 [npm-version-src]: https://img.shields.io/npm/v/vite-plugin-typed-router.svg
 [npm-version-href]: https://www.npmjs.com/package/vite-plugin-typed-router
